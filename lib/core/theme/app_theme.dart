@@ -23,13 +23,13 @@ class AppTheme {
         onSurface: Color(0xFF1A1A1A),                  // Hitam elegan (tidak terlalu pekat)
       ),
 
-      textTheme: GoogleFonts.montserratTextTheme(ThemeData.light().textTheme),
+      // textTheme: GoogleFonts.montserratTextTheme(ThemeData.light().textTheme),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: Color(0xFF1A1A1A)),
-        titleTextStyle: TextStyle(color: Color(0xFF1A1A1A), fontSize: 20, fontWeight: FontWeight.bold),
+        titleTextStyle: TextStyle(color: Color(0xFF1A1A1A), fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.0,),
       ),
     );
   }

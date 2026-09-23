@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:md_midtermproject/features/profile/presentation/pages/profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+// --- Import halaman dan bloc bawaanmu ---
 import '../../../order/data/repositories/order_repository_impl.dart';
 import '../../../order/presentation/bloc/order_bloc.dart';
 import '../../../order/presentation/pages/order_history_page.dart';
 import '../../../product/presentation/pages/catalog_page.dart';
 import '../../../profile/data/repositories/profile_repository_impl.dart';
 import '../../../profile/presentation/bloc/profile_bloc.dart';
+import 'package:md_midtermproject/features/profile/presentation/pages/profile_page.dart';
 
+// --- Tambahkan Import Fitur AI Mekanik di sini ---
+// (Sesuaikan path-nya jika folder ai_mechanic ada di tempat lain)
+import '../../../ai_mechanic/data/repositories/ai_mechanic_repository.dart';
+import '../../../ai_mechanic/presentation/bloc/ai_mechanic_bloc.dart';
+import '../../../ai_mechanic/presentation/pages/ai_mechanic_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -31,12 +38,18 @@ class _MainPageState extends State<MainPage> {
       child: const OrderHistoryPage(),
     ),
 
+    // Tab Ke-3: Mekanik AI (Disuntik dengan BlocProvider)
+    BlocProvider(
+      create: (context) => AiMechanicBloc(
+        repository: AiMechanicRepository(),
+      ),
+      child: const AiMechanicPage(),
+    ),
+
     BlocProvider(
       create: (context) => ProfileBloc(ProfileRepositoryImpl(Supabase.instance.client)),
       child: const ProfilePage(),
     ),
-
-    const ProfilePage(), // Placeholder
   ];
 
   void _onItemTapped(int index) {
@@ -68,7 +81,7 @@ class _MainPageState extends State<MainPage> {
           selectedItemColor: theme.primaryColor,
           unselectedItemColor: Colors.grey,
           showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
+          type: BottomNavigationBarType.fixed, // Penting agar >3 item tidak bergeser aneh
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
@@ -80,6 +93,12 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.receipt_long_outlined),
               activeIcon: Icon(Icons.receipt_long_rounded),
               label: 'Riwayat',
+            ),
+            // Tambahan Icon untuk Mekanik AI
+            BottomNavigationBarItem(
+              icon: Icon(Icons.smart_toy_outlined), // Icon Robot
+              activeIcon: Icon(Icons.smart_toy_rounded),
+              label: 'Mekanik AI',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),

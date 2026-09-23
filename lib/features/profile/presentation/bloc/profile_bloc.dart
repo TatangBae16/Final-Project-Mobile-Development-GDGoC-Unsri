@@ -9,8 +9,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(this.repository) : super(ProfileLoading()) {
 
     // Mengambil data profil
-    on<LoadProfile>((event, emit) {
+    on<LoadProfile>((event, emit) async {
+
+      emit(ProfileLoading());
+
+      await Future.delayed(const Duration(seconds: 1));
+
       final user = repository.getCurrentUser();
+
       if (user != null) {
         emit(ProfileLoaded(user));
       } else {

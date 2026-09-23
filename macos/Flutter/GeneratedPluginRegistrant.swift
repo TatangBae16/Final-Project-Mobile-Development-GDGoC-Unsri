@@ -14,6 +14,7 @@ import google_sign_in_ios
 import local_auth_darwin
 import package_info_plus
 import passkeys_darwin
+import printing
 import shared_preferences_foundation
 import sqflite_darwin
 import ua_client_hints
@@ -29,6 +30,7 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   LocalAuthPlugin.register(with: registry.registrar(forPlugin: "LocalAuthPlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))
   PasskeysPlugin.register(with: registry.registrar(forPlugin: "PasskeysPlugin"))
+  PrintingPlugin.register(with: registry.registrar(forPlugin: "PrintingPlugin"))
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
   UAClientHintsPlugin.register(with: registry.registrar(forPlugin: "UAClientHintsPlugin"))

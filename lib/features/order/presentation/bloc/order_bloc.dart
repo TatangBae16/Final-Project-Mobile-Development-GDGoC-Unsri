@@ -11,6 +11,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<FetchOrderHistory>((event, emit) async {
       emit(OrderLoading());
       try {
+        await Future.delayed(const Duration(seconds: 1));
         final orders = await orderRepository.getOrderHistory(event.userId);
         emit(OrderLoaded(orders));
       } catch (e) {
