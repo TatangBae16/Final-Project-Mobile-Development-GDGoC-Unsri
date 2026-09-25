@@ -43,3 +43,16 @@ class OrderCheckoutError extends OrderState {
   @override
   List<Object?> get props => [message];
 }
+
+// 👇 TAMBAHKAN 3 CLASS INI DI PALING BAWAH 👇
+class OrderPaymentSuccess extends OrderState {}
+
+class OrderCancelSuccess extends OrderState {}
+
+class OrderActionError extends OrderState {
+  final String message;
+  const OrderActionError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

@@ -23,6 +23,8 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  get rawMessage => null;
+
   @override
   void initState() {
     super.initState();
@@ -83,8 +85,14 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
 
             // Daftar Percakapan / Konsultasi
             ...chatHistory.map((chat) {
-              final bool isUser = chat['is_user'] ?? false;
-              final String message = chat['message'] ?? '';
+              final bool isUser = chat['is_user'] == true;
+              final String rawMessage = (chat['message'] ?? '').toString();
+
+              final String cleanMessage = rawMessage
+                  .replaceAll(RegExp(r'\*+'), '')
+                  .replaceAll(RegExp(r'#+\s'), '')
+                  .replaceAll(RegExp(r'`'), '')
+                  .trim();
 
               return pw.Container(
                 margin: const pw.EdgeInsets.only(bottom: 12),
@@ -97,23 +105,28 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
                     width: 0.5,
                   ),
                 ),
-                child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text(
-                      isUser ? 'Keluhan Pengendara:' : 'Diagnosa Mekanik AI:',
-                      style: pw.TextStyle(
-                        fontSize: 10,
-                        fontWeight: pw.FontWeight.bold,
-                        color: isUser ? PdfColors.grey700 : PdfColors.teal800,
+                // 👇 GANTI pw.Column MENJADI pw.RichText
+                child: pw.RichText(
+                  text: pw.TextSpan(
+                    children: [
+                      pw.TextSpan(
+                        // Menambahkan \n agar isi pesan otomatis turun ke baris bawah
+                        text: (isUser ? 'Keluhan Pengendara:\n' : 'Diagnosa Mekanik AI:\n'),
+                        style: pw.TextStyle(
+                          fontSize: 10,
+                          fontWeight: pw.FontWeight.bold,
+                          color: isUser ? PdfColors.grey700 : PdfColors.teal800,
+                        ),
                       ),
-                    ),
-                    pw.SizedBox(height: 4),
-                    pw.Text(
-                      message,
-                      style: const pw.TextStyle(fontSize: 11, color: PdfColors.black),
-                    ),
-                  ],
+                      pw.TextSpan(
+                        text: cleanMessage, // 👈 Menggunakan teks yang sudah dibersihkan dari bintang
+                        style: const pw.TextStyle(
+                          fontSize: 11,
+                          color: PdfColors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }).toList(),
@@ -133,8 +146,11 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
     );
 
     // Membuka menu pratinjau (preview) cetak / simpan PDF bawaan HP
+    final Uint8List pdfBytes = await pdf.save();
+
+    // Membuka menu pratinjau (preview) cetak / simpan PDF bawaan HP
     await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
+      onLayout: (PdfPageFormat format) async => pdfBytes, // 👈 Panggil bytes-nya di sini
       name: 'Diagnosa_GearShift_${DateTime.now().millisecondsSinceEpoch}.pdf',
     );
   }
@@ -231,13 +247,20 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_rounded),
             tooltip: 'Unduh Laporan PDF',
-            onPressed: () {
+            onPressed: () async {
               HapticFeedback.selectionClick();
 
               final state = context.read<AiMechanicBloc>().state;
               if (state is AiMechanicLoaded && state.chatHistory.isNotEmpty) {
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Menyiapkan dokumen PDF...'),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
                 // Memanggil fungsi pembuat PDF dengan membawa data history saat ini
-                _generateAndPrintPdf(state.chatHistory);
+                await _generateAndPrintPdf(state.chatHistory);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Tidak ada riwayat chat untuk diekspor.')),
@@ -456,6 +479,13 @@ class _AiMechanicPageState extends State<AiMechanicPage> {
                         content: const Text('Mengarahkan ke Katalog...'),
                         backgroundColor: theme.primaryColor,
                         duration: const Duration(seconds: 1),
+                      ),
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CatalogPage(),
                       ),
                     );
                   },

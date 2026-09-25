@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // --- Imports fitur ---
 import 'core/network/dio_client.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/notification_helper.dart';
 import 'features/admin/presentation/pages/admin_dashboard_page.dart';
 import 'features/auth/presentation/pages/splash_page.dart';
 import 'features/home/presentation/pages/main_page.dart';
@@ -44,6 +45,8 @@ void main() async {
     final prefs = await SharedPreferences.getInstance();
     final isDark = prefs.getBool('is_dark_mode') ?? false;
     themeNotifier.value = isDark ? ThemeMode.dark : ThemeMode.light;
+
+    await NotificationHelper.init();
 
     runApp(const MyApp());
   } catch (e) {

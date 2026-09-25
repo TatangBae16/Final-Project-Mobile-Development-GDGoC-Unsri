@@ -20,6 +20,7 @@ class BiometricHelper {
     try {
       return await _auth.authenticate(
         localizedReason: 'Gunakan sidik jari untuk masuk ke GearShift',
+        biometricOnly: true,
       );
     } catch (e) {
       return false;

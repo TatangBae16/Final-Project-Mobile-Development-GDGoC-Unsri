@@ -29,6 +29,29 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  // 👇 TAMBAHKAN FUNGSI INI DI BAWAH dispose()
+  Future<void> _processBiometric(BuildContext context, String reason) async {
+    final biometricHelper = BiometricHelper();
+    final isAuthenticated = await biometricHelper.authenticate();
+
+    if (!context.mounted) return;
+
+    if (isAuthenticated) {
+      final prefs = await SharedPreferences.getInstance();
+      final savedEmail = prefs.getString('saved_email');
+      final savedPassword = prefs.getString('saved_password');
+
+      if (savedEmail != null && savedEmail.isNotEmpty && savedPassword != null && savedPassword.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('⏳ Memproses login...'), backgroundColor: Color(0xFF36ADA3)));
+        context.read<AuthBloc>().add(LoginRequested(savedEmail, savedPassword));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('❌ Gagal: Login manual dulu 1 kali.'), backgroundColor: Colors.orange));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('❌ Autentikasi dibatalkan.'), backgroundColor: Colors.red));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,29 +1,29 @@
-# 🏍️ GearShift — E-Commerce Komponen Otomotif
+# 🏍️ GearShift — E-Commerce & Smart Mechanic
 
-> Tugas **Midterm Mobile Development — GDGoC Unsri**
+> Tugas **Final Project Mobile Development — GDGoC Unsri**
 
 **GearShift** adalah aplikasi *mobile* berbasis Flutter yang dirancang untuk memudahkan mekanik dan penggemar otomotif dalam mencari, mendiagnosa, dan membeli komponen mesin sepeda motor secara cepat dan akurat.
 
-Proyek ini merupakan aplikasi **fullstack mobile** — bukan sekadar tampilan UI Flutter — karena terhubung langsung dengan **backend nyata (Supabase)** untuk autentikasi, penyimpanan data produk, transaksi, dan manajemen stok secara *real-time*.
-
-Proyek ini dibangun menggunakan pendekatan **Feature-First Clean Architecture** yang dikombinasikan dengan pola **BLoC (Business Logic Component)** untuk *state management*, serta **Supabase** sebagai *Backend-as-a-Service* (BaaS).
+Proyek ini merupakan aplikasi **fullstack mobile** kelas industri yang dibangun menggunakan pendekatan **Feature-First Clean Architecture**, pola **BLoC (Business Logic Component)** untuk manajemen status (*state management*), sistem pakar kecerdasan buatan (*AI Mechanic*), dan integrasi backend menggunakan **Supabase**. Seluruh alur logika dan antarmuka aplikasi telah divalidasi keandalannya menggunakan **Comprehensive Unit, Widget & Integration Testing**.
 
 ---
 
 ## 📑 Daftar Isi
 
 1. [Informasi Proyek](#-informasi-proyek)
-2. [Fitur Utama](#-fitur-utama)
+2. [Fitur Utama & Pembaruan](#-fitur-utama--pembaruan)
 3. [Teknologi, Versi & Dependensi](#-teknologi-versi--dependensi)
 4. [Arsitektur Aplikasi](#-arsitektur-aplikasi)
-5. [Informasi Backend](#-informasi-backend)
+5. [Informasi Backend & Supabase](#-informasi-backend--supabase)
 6. [Dokumentasi API](#-dokumentasi-api)
 7. [Struktur Folder Lengkap](#-struktur-folder-lengkap)
-8. [Cara Menjalankan Proyek](#-cara-menjalankan-proyek)
-9. [Konfigurasi Environment (.env)](#-konfigurasi-environment-env)
-10. [Cuplikan Aplikasi (Screenshots)](#-cuplikan-aplikasi-screenshots)
-11. [Standar Kontribusi (Conventional Commits)](#-standar-kontribusi-conventional-commits)
-12. [Kontributor](#-kontributor)
+8. [Panduan Pengujian (Testing)](#-panduan-pengujian-testing)
+9. [Cara Menjalankan Proyek](#-cara-menjalankan-proyek)
+10. [Konfigurasi Environment (.env)](#-konfigurasi-environment-env)
+11. [Cuplikan Aplikasi (Screenshots)](#-cuplikan-aplikasi-screenshots)
+12. [Standar Kontribusi (Conventional Commits)](#-standar-kontribusi-conventional-commits)
+13. [Kontributor](#-kontributor)
+14. [Lisensi](#-lisensi)
 
 ---
 
@@ -31,50 +31,59 @@ Proyek ini dibangun menggunakan pendekatan **Feature-First Clean Architecture** 
 
 | Atribut | Keterangan |
 |---|---|
-| Nama Proyek | **GearShift** |
-| Mata Kuliah / Kegiatan | Midterm Mobile Development — GDGoC Unsri |
-| Tema | E-Commerce Komponen Otomotif (Sparepart Sepeda Motor) |
-| Platform | Android / iOS (Flutter) |
-| Tipe Proyek | Fullstack Mobile Development (Flutter + Backend Supabase) |
-| Repository Asal | `Midterm-Mobile-Development-GDGoC-Unsri` |
-| Nama Folder Proyek | `md_midtermproject` |
-
-> 📝 *Catatan: Bagian ini wajib disesuaikan oleh setiap pengerja tugas (nama, NIM, kelas, dan tautan repository hasil fork masing-masing) sebelum dikumpulkan.*
+| **Nama Proyek** | **GearShift** |
+| **Deskripsi Kegiatan** | Final Project Mobile Development — GDGoC Unsri |
+| **Tema** | E-Commerce Otomotif & Sistem Pakar AI |
+| **Platform** | Android / iOS (Flutter) |
+| **Tipe Proyek** | Fullstack Mobile Development (Flutter + Supabase) |
+| **Repository Asal** | `Midterm-Mobile-Development-GDGoC-Unsri` |
+| **Nama Folder Proyek** | `md_midtermproject` |
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur Utama & Pembaruan
 
-Aplikasi GearShift memiliki berbagai fitur fungsional yang mensimulasikan platform *e-commerce* dunia nyata:
+Aplikasi GearShift mengintegrasikan fungsionalitas perdagangan elektronik modern dengan fitur kecerdasan buatan dan validasi kualitas tinggi:
+
+### 🤖 Smart Mechanic AI (Sistem ChatBot Diagnosa)
+- **Diagnosa Keluhan Mesin:** Chatbot interaktif untuk menganalisis masalah motor (misalnya: tarikan ngempos, motor brebet, suara kasar pada CVT).
+- **Format Respons Terstruktur:** Tampilan diagnosa menggunakan *rich text* Markdown (teks tebal, penomoran, dan butir daftar).
+- **Quick Reply Chips:** Tombol jalan pintas untuk memilih keluhan umum tanpa perlu mengetik manual.
+- **Ekspor Dokumen PDF:** Cetak ringkasan laporan diagnosa mekanik ke dokumen PDF resmi (berformat Struk Bengkel).
+- **Filter Riwayat Kalender:** Menemukan kembali riwayat obrolan konsultasi berdasarkan tanggal spesifik.
+
+### 🧪 Penjaminan Mutu & Pengujian (Automated Testing)
+- **Unit Testing (BLoC):** Memverifikasi emisi *state* logika bisnis di setiap modul secara terisolasi.
+- **Widget Testing:** Pengujian render antarmuka dan simulasi interaksi pengguna (tombol, *scrolling*, dan *dialog*).
+- **Mocking & Offline Reliability:** Menggunakan `bloc_test` dan *fake repository* tanpa ketergantungan koneksi jaringan luar saat pengujian dijalankan.
 
 ### 🔐 Keamanan & Otentikasi
-- Login & registrasi menggunakan **Supabase Auth**.
-- Integrasi **Google Sign-In**.
-- Modul **Biometric Helper** untuk dukungan keamanan tambahan (Fingerprint / FaceID).
-- *Splash Screen* dengan animasi transisi *gradient* yang mulus.
+- Login & registrasi akun melalui **Supabase Auth**.
+- Dukungan **Google Sign-In**.
+- Modul pembantu keamanan biometrik (**Fingerprint / FaceID**).
+- *Splash screen* dengan penanganan transisi dan *loading* yang aman.
 
-### 📦 Katalog & Detail Produk
-- Menampilkan etalase suku cadang secara *real-time* dari database.
-- **Shimmer Effect** saat memuat data agar UI terasa responsif.
-- Halaman spesifikasi detail produk dengan pengaturan **Quantity** menggunakan BLoC tersendiri (`quantity_bloc`).
+### 📦 Katalog & Detail Komponen
+- Etalase komponen motor real-time dari database.
+- **Skeleton Shimmer Loading** untuk kenyamanan visual saat memuat data.
+- Pengaturan kuantitas pembelian terisolasi melalui `quantity_bloc`.
 
 ### ❤️ Wishlist Interaktif
-- Penyimpanan daftar komponen impian menggunakan *query* relasi database (`*, products(*)`).
-- Kartu *wishlist* dapat diklik dan memiliki tombol aksi cepat (Hapus atau Pindahkan langsung ke Keranjang).
+- Penyimpanan suku cadang impian berbasis relasi database (`*, products(*)`).
+- Aksi instan: Hapus dari daftar atau langsung pindahkan ke keranjang belanja.
 
 ### 🛒 Keranjang Belanja Pintar (Smart Cart)
-- **Logika Upsert:** otomatis menggabungkan (*update quantity*) barang yang sama, atau membuat baris baru (*insert*) jika barang belum ada.
-- **Offline Support:** menyimpan status keranjang belanja terakhir di memori lokal menggunakan `SharedPreferences`.
+- **Logika Upsert:** Penggabungan otomatis kuantitas untuk produk yang sama.
+- **Optimistic UI:** Pembaruan jumlah barang secara instan pada memori sebelum proses sinkronisasi background selesai.
+- **Offline Cache:** Penyimpanan sesi keranjang pada memori lokal menggunakan `SharedPreferences`.
 
-### 💳 Checkout & Manajemen Pesanan
-- Pemotongan stok otomatis di *database* pusat saat proses *checkout* berhasil.
-- Perekaman dan tampilan **Riwayat Transaksi** (Order History).
+### 💳 Checkout & Manajemen Transaksi
+- Sinkronisasi transaksi dengan pemotongan stok otomatis di basis data pusat.
+- Pelacakan dan rekap data riwayat belanja (*Order History*).
 
-### 👤 Manajemen Profil
-- Pengaturan dan pembaruan data profil pengguna.
-
-### 🛡️ Panel Admin Khusus
-- Dashboard admin untuk menambah atau mengedit stok dan produk ke dalam sistem (`admin_dashboard_page.dart`, `form_product_page.dart`).
+### 🛡️ Panel Admin Khusus (CMS)
+- Dashboard pengelolaan inventaris (tambah, perbarui, dan hapus suku cadang).
+- Pemantauan seluruh status transaksi pengguna secara terpusat.
 
 ---
 
@@ -82,117 +91,108 @@ Aplikasi GearShift memiliki berbagai fitur fungsional yang mensimulasikan platfo
 
 ### Lingkungan Pengembangan
 
-| Komponen | Versi yang Digunakan |
+| Komponen | Versi Acuan |
 |---|---|
-| Flutter SDK | `>=3.x` *(sesuaikan dengan output `flutter --version`)* |
-| Dart SDK | `>=3.x` *(sesuaikan dengan `environment:` pada `pubspec.yaml`)* |
+| Flutter SDK | `>=3.x` |
+| Dart SDK | `>=3.x` |
 | IDE | Android Studio / VS Code |
-
-> ⚠️ Versi pasti Flutter & Dart yang dipakai dapat dicek melalui berkas `pubspec.yaml` (bagian `environment:`) dan dengan menjalankan `flutter --version` pada terminal.
 
 ### Dependensi Utama (`pubspec.yaml`)
 
 | Package | Fungsi |
 |---|---|
-| `flutter_bloc` | State management berbasis BLoC pattern |
-| `equatable` | Perbandingan objek/state secara efisien pada BLoC |
-| `supabase_flutter` | Koneksi ke backend Supabase (Auth, Database, Storage) |
-| `dio` | HTTP Client untuk komunikasi REST API |
-| `shared_preferences` | Penyimpanan lokal (offline cache keranjang & sesi) |
-| `cached_network_image` | Caching gambar produk agar loading lebih cepat |
-| `google_sign_in` | Login menggunakan akun Google |
-| `local_auth` | Autentikasi biometrik (fingerprint/FaceID) |
-| `flutter_dotenv` | Memuat variabel environment (`.env`) secara aman |
-| `shimmer` | Efek *placeholder loading* (skeleton UI) |
-
-> 📝 *Catatan: daftar di atas merangkum dependensi inti berdasarkan struktur proyek. Daftar versi spesifik (`^x.x.x`) dapat dilihat langsung pada berkas `pubspec.yaml` di root proyek — pastikan untuk menyalin isi `pubspec.yaml` terbaru ke README jika ada penyesuaian versi.*
+| `flutter_bloc` | Manajemen status aplikasi berbasis BLoC pattern |
+| `equatable` | Optimasi pembandingan objek dan state BLoC |
+| `supabase_flutter` | SDK integrasi layanan backend Supabase |
+| `dio` | HTTP Client untuk komunikasi API jaringan |
+| `shared_preferences` | Penyimpanan lokal untuk preferensi tema dan keranjang |
+| `cached_network_image` | Manajemen cache gambar produk dari server |
+| `flutter_animate` | Animasi deklaratif pada elemen UI |
+| `flutter_markdown` | Rendering format Markdown pada respons diagnosa AI |
+| `pdf` & `printing` | Generator dokumen PDF dan antarmuka cetak cetak |
+| `shimmer` | Efek loading skeleton placeholder |
+| `google_sign_in` | Autentikasi Google |
+| `local_auth` | Autentikasi keamanan perangkat keras biometrik |
+| `flutter_dotenv` | Manajemen variabel rahasia pada file `.env` |
+| `bloc_test` & `flutter_test` | Pengujian unit, widget, dan aliran state aplikasi |
 
 ---
 
 ## 🏛️ Arsitektur Aplikasi
 
-GearShift menggunakan **Feature-First Clean Architecture**, di mana setiap fitur (`auth`, `cart`, `product`, `wishlist`, dst.) memiliki tiga lapisan terpisah:
+Aplikasi dibangun di atas **Feature-First Clean Architecture**, memisahkan domain masalah menjadi modul mandiri dengan tiga lapisan utama:
 
-```
-feature/
-├── data/         → Implementasi repository & model (sumber data: Supabase/REST API)
-├── domain/       → Interface/abstraksi repository (kontrak bisnis)
-└── presentation/ → BLoC (state management) & UI (pages/widgets)
+```text
+features/nama_fitur/
+├── data/           → Model data, data provider, dan implementasi repository
+├── domain/         → Abstraksi kontrak repository dan entity
+└── presentation/   → BLoC (State/Event/Bloc) dan antarmuka UI (Pages/Widgets)
 ```
 
-**Alur data sederhana:**
+**Alur Aliran Data:**
 
+```text
+[UI: Page / Widget]
+       │
+       │ (Memicu Event)
+       ▼
+[BLoC: Business Logic]
+       │
+       │ (Memanggil Metode Abstraksi)
+       ▼
+[Repository: Domain Interface → Data Impl]
+       │
+       │ (Eksekusi Permintaan Data)
+       ▼
+[Supabase Client / REST API]
+       │
+       │ (Mengembalikan Data Model)
+       ▼
+[BLoC Memancarkan State Baru]
+       │
+       ▼
+[UI Melakukan Rebuild Secara Reaktif]
 ```
-UI (Page/Widget)
-   │  memicu Event
-   ▼
-BLoC (Business Logic)
-   │  memanggil method
-   ▼
-Repository (Domain → Data)
-   │  request via Dio
-   ▼
-Supabase REST API (PostgreSQL)
-   │  response data
-   ▼
-BLoC mengubah State
-   │
-   ▼
-UI ter-render ulang (rebuild)
-```
-**Diagram Alur Data**
-![Diagram Alur](assets/screenshots/diagram.png)
 
 ---
 
-## ☁️ Informasi Backend
+## ☁️ Informasi Backend & Supabase
 
-GearShift **tidak menggunakan backend tradisional custom** (seperti Express.js/Laravel terpisah), melainkan menggunakan **Supabase** sebagai *Backend-as-a-Service* (BaaS) yang menyediakan:
+GearShift memanfaatkan platform **Supabase** (*PostgreSQL BaaS*) untuk mengelola penyimpanan data dan sesi pengguna secara terintegrasi.
 
-| Layanan Supabase | Kegunaan dalam Aplikasi |
+| Layanan Supabase | Peran dalam Proyek |
 |---|---|
-| **Supabase Auth** | Registrasi, login, dan manajemen sesi pengguna (termasuk Google Sign-In) |
-| **Supabase Database (PostgreSQL)** | Penyimpanan tabel `products`, `carts`, `wishlists`, `orders`, dan `profiles` |
-| **Supabase REST API (PostgREST)** | Endpoint otomatis untuk CRUD setiap tabel, diakses melalui `dio` |
-| **Row Level Security (RLS)** *(disarankan)* | Membatasi akses data agar setiap pengguna hanya dapat mengubah datanya sendiri |
+| **Supabase Auth** | Autentikasi akun pengguna (Email & Password, Google OAuth) |
+| **Supabase Database** | PostgreSQL dengan relasi data terstruktur |
+| **Supabase Storage** | Penyimpanan aset gambar komponen suku cadang |
+| **Row Level Security (RLS)** | Pembatasan izin akses data per tingkat pengguna |
 
-### Estimasi Skema Tabel Utama
+### Skema Tabel Utama
 
-| Tabel | Deskripsi Singkat |
+| Tabel | Deskripsi Data |
 |---|---|
-| `products` | Data suku cadang: nama, harga, stok, gambar, kategori |
-| `carts` | Item keranjang belanja milik pengguna (relasi ke `products`) |
-| `wishlists` | Daftar produk favorit pengguna (relasi ke `products`) |
-| `orders` | Riwayat transaksi & ringkasan checkout |
-| `profiles` | Data tambahan pengguna (nama, foto, dll.), terhubung dengan Supabase Auth |
-
-> 📝 *Catatan: skema di atas disusun berdasarkan analisis fitur & endpoint yang digunakan. Disarankan melampirkan ERD (Entity Relationship Diagram) asli dari Supabase Table Editor agar dokumentasi backend lebih akurat dan lengkap.*
+| `products` | Informasi komponen: id, nama, deskripsi, harga, stok, gambar, kategori |
+| `carts` | Relasi item belanja aktif pengguna (terhubung ke tabel `products`) |
+| `wishlists` | Relasi suku cadang impian pengguna (terhubung ke tabel `products`) |
+| `orders` | Rekapitulasi transaksi, alamat pengiriman, status pembayaran, dan total harga |
+| `profiles` | Metadata pelengkap akun pengguna (nama lengkap, alamat, nomor telepon) |
+| **`ai_chat_history`** | **[BARU]** Riwayat interaksi konsultasi diagnosa antara pengguna dan Mekanik AI |
 
 ---
 
 ## 📡 Dokumentasi API
 
-Aplikasi ini berkomunikasi dengan Supabase melalui protokol **REST API (PostgREST)** menggunakan package `dio`. Berikut rangkuman endpoint utama:
+Interaksi data berjalan melalui protokol REST API menggunakan Supabase Client & Dio:
 
 | Modul | Endpoint Path | Method | Fungsi / Deskripsi |
 |---|---|---|---|
-| Produk | `/products?select=*` | `GET` | Mengambil seluruh daftar suku cadang |
-| Produk | `/products?id=eq.{id}` | `PATCH` | Sinkronisasi / pemotongan stok otomatis |
-| Wishlist | `/wishlists?user_id=eq.{uid}&select=*,products(*)` | `GET` | Memuat daftar impian beserta detail produk terkait |
-| Keranjang | `/carts` | `POST` | Menambahkan komponen baru ke dalam keranjang |
-| Keranjang | `/carts?id=eq.{id}` | `PATCH` | **Upsert**: memperbarui *quantity* jika produk sudah ada |
-| Checkout | `/orders` | `POST` | Menyimpan ringkasan belanja dan total harga pengguna |
-
-**Base URL:** `https://<project-id>.supabase.co/rest/v1/`
-
-**Header wajib pada setiap request:**
-```
-apikey: <SUPABASE_ANON_KEY>
-Authorization: Bearer <SUPABASE_ANON_KEY atau Access Token User>
-Content-Type: application/json
-```
-
-> 💡 *Untuk dokumentasi API yang lebih komprehensif, disarankan membuat koleksi **Postman** (export sebagai `.json`) atau dokumentasi **Swagger/OpenAPI**, lalu menyertakan tautan/berkasnya pada bagian ini.*
+| Produk | `/products?select=*` | `GET` | Memuat seluruh katalog suku cadang |
+| Produk | `/products?id=eq.{id}` | `PATCH` | Sinkronisasi dan pemotongan sisa stok |
+| Wishlist | `/wishlists?user_id=eq.{uid}&select=*,products(*)` | `GET` | Memuat daftar impian beserta relasi data produk |
+| Keranjang | `/carts` | `POST` | Menambahkan komponen baru ke keranjang |
+| Keranjang | `/carts?id=eq.{id}` | `PATCH` | Memperbarui jumlah (*quantity*) item |
+| Checkout | `/orders` | `POST` | Menyimpan transaksi baru |
+| AI History | `/ai_chat_history?user_id=eq.{uid}` | `GET` | Mengambil data percakapan diagnosa |
 
 ---
 
@@ -201,31 +201,51 @@ Content-Type: application/json
 ```text
 md_midtermproject/
 ├── assets/
-│   └── images/
-│       ├── Logoku.png                     # File logo utama aplikasi
-│       └── Logoku1.png                    # Alternatif/variasi logo aplikasi
+│   ├── images/
+│   │   ├── Logoku.png                     # File logo utama aplikasi
+│   │   └── Logoku1.png                    # Variasi logo aplikasi
+│   └── screenshots/                       # Cuplikan antarmuka aplikasi
+├── integration_test/
+│   │   ├── ai_mechanic_test.dart          # Modul Smart Mechanic AI (AI Flow)
+│   │   └── app_test.dart                  # Modul Test
+│   │   ├── auth_test.dart                 # Modul Autentikasi (Auth Flow)
+│   │   └── katalog_test.dart              # Modul Katalog & Transaksi (Katalog Flow)
 ├── lib/
-│   ├── core/                              # Komponen global (Shared/Reusable)
-│   │   ├── config/                        # Pengaturan konfigurasi app
-│   │   ├── constants/                     # Nilai konstan (Warna, teks statis, ukuran)
-│   │   ├── error/                         # Penanganan error (Exceptions & Failures)
+│   ├── core/                              # Modul global yang digunakan lintas fitur
+│   │   ├── config/                        # Pengaturan konfigurasi aplikasi
+│   │   ├── constants/                     # Nilai konstan (warna, teks, ukuran)
+│   │   ├── error/                         # Definisi exception & failure
 │   │   ├── network/
-│   │   │   └── dio_client.dart            # HTTP Client menggunakan Dio
-│   │   ├── security/                      # Keamanan data tambahan
+│   │   │   └── dio_client.dart            # Klien HTTP kustom
+│   │   ├── security/                      # Utilitas keamanan tambahan
 │   │   ├── theme/
-│   │   │   └── app_theme.dart             # Konfigurasi ThemeData Terang/Gelap
+│   │   │   └── app_theme.dart             # Konfigurasi ThemeData (Dark / Light)
 │   │   └── utils/
-│   │       ├── biometric_helper.dart      # Autentikasi Sidik Jari / FaceID
-│   │       └── theme_helper.dart          # Helper manipulasi UI/Tema
+│   │       ├── biometric_helper.dart      # Autentikasi biometrik lokal
+│   │       ├── format_util.dart           # [BARU] Helper format penulisan (Rupiah/Tanggal)
+│   │       ├── status_util.dart           # [BARU] Helper warna & label status transaksi
+│   │       └── theme_helper.dart          # Helper pengalih tema UI
 │   │
-│   ├── features/                          # Direktori Fitur Berbasis Modul
-│   │   ├── admin/                         # Modul Pengelolaan Konten (Admin)
+│   ├── features/                          # Direktori fitur berbasis domain modul
+│   │   ├── admin/                         # Modul Dashboard Pengelolaan Admin
 │   │   │   └── presentation/
 │   │   │       └── pages/
 │   │   │           ├── admin_dashboard_page.dart
 │   │   │           └── form_product_page.dart
 │   │   │
-│   │   ├── auth/                          # Modul Keamanan & Sesi Pengguna
+│   │   ├── ai_mechanic/                   # [BARU] Modul Sistem Pakar Diagnosa & PDF
+│   │   │   ├── data/
+│   │   │   │   └── repositories/
+│   │   │   │       └── ai_mechanic_repository.dart
+│   │   │   └── presentation/
+│   │   │       ├── bloc/
+│   │   │       │   ├── ai_mechanic_bloc.dart
+│   │   │       │   ├── ai_mechanic_event.dart
+│   │   │       │   └── ai_mechanic_state.dart
+│   │   │       └── pages/
+│   │   │           └── ai_mechanic_page.dart
+│   │   │
+│   │   ├── auth/                          # Modul Otentikasi & Keamanan Sesi
 │   │   │   ├── data/
 │   │   │   │   ├── models/
 │   │   │   │   │   └── profile_model.dart
@@ -241,7 +261,7 @@ md_midtermproject/
 │   │   │           ├── register_page.dart
 │   │   │           └── splash_page.dart
 │   │   │
-│   │   ├── cart/                          # Modul Manajemen Keranjang
+│   │   ├── cart/                          # Modul Manajemen Keranjang Belanja
 │   │   │   ├── data/
 │   │   │   │   └── repositories/
 │   │   │   │       └── cart_repository_impl.dart
@@ -256,19 +276,19 @@ md_midtermproject/
 │   │   │       └── pages/
 │   │   │           └── cart_page.dart
 │   │   │
-│   │   ├── checkout/                      # Modul Transaksi Pembayaran
+│   │   ├── checkout/                      # Modul Ringkasan Transaksi & Pembayaran
 │   │   │   ├── data/
 │   │   │   ├── domain/
 │   │   │   └── presentation/
 │   │   │       └── pages/
 │   │   │           └── checkout_page.dart
 │   │   │
-│   │   ├── home/                          # Modul Navigasi Utama
+│   │   ├── home/                          # Navigasi Induk Aplikasi
 │   │   │   └── presentation/
 │   │   │       └── pages/
 │   │   │           └── main_page.dart
 │   │   │
-│   │   ├── order/                         # Modul Riwayat Belanja
+│   │   ├── order/                         # Modul Riwayat Transaksi Pesanan
 │   │   │   ├── data/
 │   │   │   │   └── repositories/
 │   │   │   │       └── order_repository_impl.dart
@@ -283,7 +303,7 @@ md_midtermproject/
 │   │   │       └── pages/
 │   │   │           └── order_history_page.dart
 │   │   │
-│   │   ├── product/                       # Modul Manajemen Suku Cadang
+│   │   ├── product/                       # Modul Manajemen & Detail Suku Cadang
 │   │   │   ├── data/
 │   │   │   │   ├── models/
 │   │   │   │   │   └── product_model.dart
@@ -300,13 +320,13 @@ md_midtermproject/
 │   │   │       │   ├── quantity_bloc.dart
 │   │   │       │   ├── quantity_event.dart
 │   │   │       │   └── quantity_state.dart
-│   │   │       └── pages/
-│   │   │           ├── catalog_page.dart
-│   │   │           └── product_detail_page.dart
+│   │   │       ├── pages/
+│   │   │       │   ├── catalog_page.dart
+│   │   │       │   └── product_detail_page.dart
 │   │   │       └── widgets/
 │   │   │           └── product_shimmer.dart
 │   │   │
-│   │   ├── profile/                       # Modul Manajemen Akun Pengguna
+│   │   ├── profile/                       # Modul Pengelolaan Data Akun Pengguna
 │   │   │   ├── data/
 │   │   │   │   └── repositories/
 │   │   │   │       └── profile_repository_impl.dart
@@ -321,7 +341,7 @@ md_midtermproject/
 │   │   │       └── pages/
 │   │   │           └── profile_page.dart
 │   │   │
-│   │   └── wishlist/                      # Modul Barang Impian
+│   │   └── wishlist/                      # Modul Daftar Komponen Favorit
 │   │       ├── data/
 │   │       │   └── repositories/
 │   │       │       └── wishlist_repository_impl.dart
@@ -336,67 +356,108 @@ md_midtermproject/
 │   │           └── pages/
 │   │               └── wishlist_page.dart
 │   │
-│   └── main.dart                          # Inisialisasi awal & Registrasi BLoC global
+│   └── main.dart                          # Titik masuk utama & inisialisasi dependency
 │
-├── .env                                   # Konfigurasi lokal kredensial API (jangan di-commit)
-├── .gitignore                             # Daftar pengecualian upload git
-├── pubspec.yaml                           # Daftar dependensi & metadata proyek
-└── README.md                              # Dokumentasi proyek (berkas ini)
+├── test/                                  # [BARU] Rangkaian Pengujian Komprehensif (Unit & Widget Test)
+│   ├── admin/
+│   │   ├── admin_dashboard_widget_test.dart
+│   │   └── form_product_widget_test.dart
+│   ├── ai_mechanic/
+│   │   ├── ai_mechanic_bloc_test.dart
+│   │   └── ai_mechanic_widget_test.dart
+│   ├── auth/
+│   │   ├── auth_bloc_test.dart
+│   │   ├── login_widget_test.dart
+│   │   ├── register_widget_test.dart
+│   │   └── splash_widget_test.dart
+│   ├── cart/
+│   │   ├── cart_bloc_test.dart
+│   │   └── cart_widget_test.dart
+│   ├── checkout/
+│   │   └── checkout_widget_test.dart
+│   ├── product/
+│   │   ├── catalog_widget_test.dart
+│   │   ├── product_bloc_test.dart
+│   │   ├── product_detail_widget_test.dart
+│   │   └── quantity_bloc_test.dart
+│   ├── wishlist/
+│   │   ├── wishlist_bloc_test.dart
+│   │   └── wishlist_widget_test.dart
+│   ├── format_util_test.dart
+│   ├── order_history_widget_test.dart
+│   ├── profile_bloc_test.dart
+│   ├── profile_widget_test.dart
+│   └── status_util_test.dart
+│
+├── .env                                   # Konfigurasi kredensial lokal (dikecualikan di git)
+├── .gitignore                             # Aturan pengabaian pelacakan berkas Git
+├── pubspec.yaml                           # Konfigurasi dependensi paket pihak ketiga
+└── README.md                              # Dokumentasi teknis proyek
+```
+
+---
+
+## 🧪 Panduan Pengujian (Testing)
+
+Seluruh pengujian unit dan widget dibangun agar dapat dieksekusi secara instan dan mandiri tanpa memerlukan jaringan internet atau ketersediaan server langsung (*Mock Environment*).
+
+Jalankan seluruh rangkaian tes proyek dengan satu perintah:
+```bash
+flutter test
+```
+
+Untuk menguji direktori modul tertentu secara terpisah:
+```bash
+# Pengujian modul AI Mechanic
+flutter test test/ai_mechanic/
+
+# Pengujian modul Keranjang
+flutter test test/cart/
+
+# Pengujian modul Katalog Produk
+flutter test test/product/
 ```
 
 ---
 
 ## 🚀 Cara Menjalankan Proyek
 
-Ikuti langkah-langkah berikut secara berurutan untuk menjalankan proyek di perangkat lokal Anda.
+### 1. Prasyarat Sistem
+- **Flutter SDK** versi 3.x telah terkonfigurasi pada path environment.
+- Emulator Android / iOS Simulator atau perangkat fisik aktif.
 
-### 1. Prasyarat (Prerequisites)
-Pastikan perangkat Anda telah memiliki:
-- **Flutter SDK** sudah terinstal dan dikonfigurasi (`flutter doctor` tidak menunjukkan error fatal)
-- **Android Studio** / **Xcode** (untuk emulator/simulator) atau perangkat fisik
-- Akun **Supabase** aktif (untuk membuat project backend sendiri jika diperlukan)
-
-### 2. Clone Repository
+### 2. Kloning Repository
 ```bash
-git clone https://github.com/TatangBae16/Midterm-Mobile-Development-GDGoC-Unsri.git
-cd md_midtermproject
+git clone https://github.com/TatangBae16/Final-Project-Mobile-Development-GDGoC-Unsri.git
+cd nama-direktori-anda
 ```
 
-### 3. Unduh Dependencies
+### 3. Pasang Dependensi
 ```bash
 flutter pub get
 ```
 
-### 4. Konfigurasi Environment Variable
-Buat berkas `.env` di root proyek (lihat bagian [Konfigurasi Environment](#-konfigurasi-environment-env) di bawah).
+### 4. Konfigurasi Environment
+Buat berkas `.env` pada direktori root proyek (sejajar dengan `pubspec.yaml`) sesuai panduan di bawah.
 
-### 5. Jalankan Aplikasi
+### 5. Eksekusi Aplikasi
 ```bash
 flutter run
-```
-
-> 💡 Pastikan emulator/perangkat sudah aktif sebelum menjalankan perintah `flutter run`. Cek daftar perangkat yang terdeteksi dengan `flutter devices`.
-
-### 6. (Opsional) Build APK untuk Rilis
-```bash
-flutter build apk --release
 ```
 
 ---
 
 ## 🔑 Konfigurasi Environment (.env)
 
-Buat sebuah berkas baru bernama **`.env`** di root direktori proyek (sejajar dengan berkas `pubspec.yaml`), lalu isi dengan kredensial Supabase Anda:
+Buat file bernama `.env` pada root direktori:
 
 ```env
-SUPABASE_URL=masukkan_url_disini
-SUPABASE_ANON_KEY=masukkan_kunci_anon_di_sini
-MIDTRANS_SERVER_KEY=masukkan_kunci_server_di_sini
+SUPABASE_URL=https://proyek-anda.supabase.co
+SUPABASE_ANON_KEY=kunci-anon-supabase-anda
+MIDTRANS_SERVER_KEY=kunci-server-midtrans-anda
+GEMINI_API_KEY=kunci-api-gemini-anda
 ```
-**Penjelasan Variabel:**
-* **`SUPABASE_URL`**: Alamat utama (*API Endpoint*) untuk menghubungkan aplikasi dengan *database* Supabase.
-* **`SUPABASE_ANON_KEY`**: Kunci akses publik yang wajib disertakan agar aplikasi memiliki izin untuk membaca dan menulis data di Supabase.
-* **`MIDTRANS_SERVER_KEY`**: Kunci otentikasi dari Midtrans untuk memproses transaksi dan gerbang pembayaran (*Payment Gateway*).
+
 ---
 
 ## 🖼️ Cuplikan Aplikasi (Screenshots)
@@ -404,58 +465,50 @@ MIDTRANS_SERVER_KEY=masukkan_kunci_server_di_sini
 ### 👤 Tampilan Pengguna (User)
 
 | Halaman Login | Katalog Produk | Detail Produk |
-|---|---|---|
+|:---:|:---:|:---:|
 | ![Login](assets/screenshots/login.png) | ![Katalog Produk](assets/screenshots/catalog.png) | ![Detail Produk](assets/screenshots/product_detail.png) |
 
-| Halaman Wishlist | Keranjang | Checkout |
-|---|---|---|
+| Halaman Wishlist | Keranjang Belanja | Checkout |
+|:---:|:---:|:---:|
 | ![Wishlist](assets/screenshots/wishlist.png) | ![Keranjang](assets/screenshots/cart.png) | ![Checkout](assets/screenshots/checkout.png) |
 
-| Riwayat Transaksi (User) | Profil User |
-|---|---|
-| ![Riwayat Transaksi](assets/screenshots/order_history.png) | ![Profil User](assets/screenshots/profile.png) |
+| Riwayat Transaksi | Profil Pengguna | Mekanik AI & PDF |
+|:---:|:---:|:---:|
+| ![Riwayat Transaksi](assets/screenshots/order_history.png) | ![Profil User](assets/screenshots/profile.png) | ![Mekanik AI](assets/screenshots/ai_mechanic.png) |
 
 ### 🛡️ Tampilan Admin
 
-| Admin Dashboard | Form Kelola Barang | Transaksi Semua User (Admin) |
-|---|---|---|
-| ![Admin Dashboard](assets/screenshots/admin_dashboard.png) | ![Form Kelola Barang](assets/screenshots/admin_form_product.png) | ![Transaksi Semua User](assets/screenshots/admin_all_transactions.png) |
-
-> 💡 *Disarankan menambahkan GIF demo alur aplikasi (login → katalog → checkout) untuk melengkapi dokumentasi.*
+| Dashboard Admin | Form Kelola Suku Cadang | Seluruh Transaksi Toko |
+|:---:|:---:|:---:|
+| ![Admin Dashboard](assets/screenshots/admin_dashboard.png) | ![Form Produk](assets/screenshots/admin_form_product.png) | ![Semua Transaksi](assets/screenshots/admin_all_transactions.png) |
 
 ---
 
 ## 📝 Standar Kontribusi (Conventional Commits)
 
-Seluruh riwayat *commit* pada proyek ini mengikuti standar **[Conventional Commits](https://www.conventionalcommits.org/)** agar riwayat perubahan tetap rapi dan mudah dilacak.
+Seluruh riwayat komit mengikuti konvensi **Conventional Commits**:
 
-### Format Commit
-```
-<tipe>(<lingkup opsional>): <deskripsi singkat>
-```
+Format: `<tipe>(<lingkup opsional>): <deskripsi singkat>`
 
-### Tipe Commit yang Umum Digunakan
-
-| Tipe | Kegunaan | Contoh |
+| Tipe | Makna Perubahan | Contoh |
 |---|---|---|
-| `feat` | Menambahkan fitur baru | `feat(cart): tambahkan logika upsert quantity` |
-| `fix` | Memperbaiki bug | `fix(auth): perbaiki bug session tidak persist` |
-| `refactor` | Refaktor kode tanpa mengubah fungsi | `refactor(product): pisahkan logika quantity ke bloc baru` |
-| `style` | Perubahan tampilan/format kode (tanpa logic) | `style(theme): perbarui palet warna utama` |
-| `docs` | Perubahan dokumentasi | `docs(readme): lengkapi dokumentasi API` |
-| `chore` | Tugas pendukung (config, dependency, dll.) | `chore: update dependensi supabase_flutter` |
-| `test` | Menambahkan/memperbaiki pengujian | `test(cart_bloc): tambahkan unit test cart bloc` |
+| `feat` | Penambahan fitur baru | `feat(ai_mechanic): tambahkan integrasi cetak laporan PDF` |
+| `fix` | Perbaikan bug/kendala kode | `fix(cart): atasi timeout animasi cached network image` |
+| `test` | Penambahan atau pembaruan pengujian | `test(product): lengkapi widget test untuk katalog dan detail` |
+| `refactor` | Perapian kode tanpa mengubah fungsionalitas | `refactor(auth): pisahkan abstraksi login ke interface` |
+| `docs` | Pembaruan dokumentasi proyek | `docs(readme): perbarui arsitektur folder dan panduan test` |
+| `chore` | Penyesuaian konfigurasi atau dependensi | `chore: sinkronisasi pubspec lock` |
 
 ---
 
 ## 👤 Kontributor
 
-| Nama                    | NIM              | Peran |
-|-------------------------|------------------|---|
-| *TARUNA RAJASA IRYAWAN* | *09021282328071* | Developer |
+| Nama Lengkap | Nomor Induk Mahasiswa (NIM) | Peran Proyek |
+|---|---|---|
+| **TARUNA RAJASA IRYAWAN** | **09021282328071** | Fullstack Mobile Developer |
 
 ---
 
 ## 📄 Lisensi
 
-Proyek ini dibuat untuk keperluan **tugas akademik (Midterm Mobile Development — GDGoC Unsri)** dan tidak ditujukan untuk penggunaan komersial.
+Proyek ini dikembangkan sebagai karya evaluasi kompetensi akademik pada kegiatan Final Project Task **Mobile Development GDGoC Universitas Sriwijaya**. Seluruh hak cipta kode dan implementasi dilindungi untuk kebutuhan edukasi.

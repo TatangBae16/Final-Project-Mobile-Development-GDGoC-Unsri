@@ -38,15 +38,36 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
     on<CheckOrderPayment>((event, emit) async {
       try {
-        // Jalankan fungsi cek status
+        // 1. Jalankan fungsi cek status ke Midtrans/Payment Gateway
         await orderRepository.checkPaymentStatus(event.orderId);
 
-        // Setelah diupdate, panggil lagi riwayat terbaru agar UI refresh otomatis
+        // 2. Ambil data pesanan terbaru dari Supabase
         final userId = Supabase.instance.client.auth.currentUser!.id;
         final updatedOrders = await orderRepository.getOrderHistory(userId);
+
+        // 3. CARI status pesanan yang baru saja dicek
+        final checkedOrder = updatedOrders.cast<Map<String, dynamic>>().firstWhere(
+              (order) => order['id'] == event.orderId,
+          // 👇 UBAH BAGIAN INI: Mengembalikan Map kosong, bukan null, agar tipe datanya tidak bentrok
+          orElse: () => <String, dynamic>{},
+        );
+
+        // 4. TEMBAKKAN STATE NOTIFIKASI BERDASARKAN STATUS
+        // PERBAIKAN: Cek apakah Map tersebut kosong alih-alih mengecek null
+        if (checkedOrder.isNotEmpty) {
+          final status = checkedOrder['status'].toString().toLowerCase();
+
+          if (status.contains('success') || status.contains('settlement') || status.contains('lunas')) {
+            emit(OrderPaymentSuccess()); // Memicu notifikasi Sukses
+          } else if (status.contains('cancel') || status.contains('expire') || status.contains('gagal')) {
+            emit(OrderCancelSuccess()); // Memicu notifikasi Batal
+          }
+        }
+
+        // 5. Terakhir, tampilkan daftar pesanan terbaru di UI
         emit(OrderLoaded(updatedOrders));
-      } catch (_) {
-        // Abaikan error atau handle sesuai kebutuhan
+      } catch (e) {
+        emit(OrderActionError(e.toString()));
       }
     });
 

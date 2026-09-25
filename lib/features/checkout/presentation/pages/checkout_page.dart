@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/utils/notification_helper.dart';
 import '../../../cart/presentation/bloc/cart_bloc.dart';
 import '../../../cart/presentation/bloc/cart_event.dart';
 import '../../../cart/presentation/bloc/cart_state.dart';
@@ -60,6 +61,9 @@ class CheckoutPage extends StatelessWidget {
             if (context.mounted) {
               context.read<CartBloc>().add(ClearCartRequested());
               Navigator.pop(context);
+
+              NotificationHelper.showOrderCreated();
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('✅ Pesanan Dibuat!'), backgroundColor: Colors.green),
               );
@@ -156,7 +160,7 @@ class CheckoutPage extends StatelessWidget {
                                     userName: userName,
                                     userEmail: userEmail,
                                     userAddress: userAddress,
-                                    totalPrice: totalPrice.toDouble(),
+                                    totalPrice: totalPrice.toInt(),
                                     cartItems: cartItems,
                                   ));
                                 },

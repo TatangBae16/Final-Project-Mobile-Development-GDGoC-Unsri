@@ -4,6 +4,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../core/utils/format_util.dart';
 import '../../../../core/utils/status_util.dart';
+
+// 👇 1. TAMBAHKAN IMPORT NOTIFICATION HELPER
+import '../../../../core/utils/notification_helper.dart';
+
 import '../bloc/order_bloc.dart';
 import '../bloc/order_event.dart';
 import '../bloc/order_state.dart';
@@ -35,11 +39,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       // aplikasinya tidak crash dan tes UI tetap bisa dilanjutkan.
     }
   }
-
-  // =========================================================
-  // FUNGSI _formatRupiah DAN _getStatusColor SUDAH DIHAPUS
-  // KARENA KITA SEKARANG MEMAKAI DARI FOLDER utils/
-  // =========================================================
 
   Widget _buildShimmerLoading(bool isDark) {
     final baseColor = isDark ? Colors.grey[800]! : Colors.grey[300]!;
@@ -123,163 +122,186 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          _loadOrders();
+      // 👇 2. BUNGKUS DENGAN BLOCLISTENER UNTUK MEMUNCULKAN NOTIFIKASI
+      body: BlocListener<OrderBloc, OrderState>(
+        listener: (context, state) {
+          // Sesuaikan 'OrderPaymentSuccess' dengan nama State yang kamu buat di order_state.dart
+          if (state is OrderPaymentSuccess) {
+            NotificationHelper.showPaymentSuccess();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('✅ Pembayaran berhasil diverifikasi!'), backgroundColor: Colors.green),
+            );
+            _loadOrders(); // Muat ulang daftar pesanan agar statusnya berubah
+          }
+          // Sesuaikan 'OrderCancelSuccess' dengan nama State pembatalanmu
+          else if (state is OrderCancelSuccess) {
+            NotificationHelper.showOrderCanceled();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('❌ Pesanan berhasil dibatalkan.'), backgroundColor: Colors.red),
+            );
+            _loadOrders(); // Muat ulang daftar pesanan
+          }
+          // Opsional: Tangani jika pengecekan gagal
+          else if (state is OrderActionError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Gagal: ${state.message}'), backgroundColor: Colors.orange),
+            );
+          }
         },
-        child: BlocBuilder<OrderBloc, OrderState>(
-          builder: (context, state) {
+        child: RefreshIndicator(
+          onRefresh: () async {
+            _loadOrders();
+          },
+          child: BlocBuilder<OrderBloc, OrderState>(
+            builder: (context, state) {
 
-            if (state is OrderLoading) {
-              return _buildShimmerLoading(isDark);
-            }
-
-            else if (state is OrderError) {
-              return Center(child: Text('Gagal memuat riwayat: ${state.message}'));
-            } else if (state is OrderLoaded) {
-              final orders = state.orders;
-
-              if (orders.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.receipt_long_outlined, size: 80, color: Colors.grey.shade400),
-                      const SizedBox(height: 16),
-                      Text('Belum ada riwayat transaksi', style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface.withOpacity(0.6))),
-                    ],
-                  ),
-                );
+              if (state is OrderLoading) {
+                return _buildShimmerLoading(isDark);
               }
 
-              return ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: orders.length,
-                itemBuilder: (context, index) {
-                  final order = orders[index];
-                  final List<dynamic> items = order['items_json'] ?? [];
-                  final String status = order['status'] ?? 'Pending';
+              else if (state is OrderError) {
+                return Center(child: Text('Gagal memuat riwayat: ${state.message}'));
+              } else if (state is OrderLoaded) {
+                final orders = state.orders;
 
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isDark ? Colors.white.withOpacity(0.08) : Colors.transparent,
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: isDark ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.05),
-                          blurRadius: 15,
-                          offset: const Offset(0, 8),
-                        )
-                      ],
-                    ),
+                if (orders.isEmpty) {
+                  return Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              order['created_at'].toString().substring(0, 10),
-                              style: const TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                // 2. MENGGUNAKAN StatusUtil BARU
-                                color: StatusUtil.getStatusColor(status).withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                status,
-                                style: TextStyle(
-                                  // 2. MENGGUNAKAN StatusUtil BARU
-                                    color: StatusUtil.getStatusColor(status),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Divider(height: 24),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: items.length,
-                          itemBuilder: (context, itemIndex) {
-                            final item = items[itemIndex];
-
-                            final productData = item['products'] ?? {};
-                            final String productName = productData['name'] ?? item['product_name'] ?? 'Produk';
-                            final num productPrice = productData['price'] ?? item['price'] ?? 0;
-                            final num quantity = item['quantity'] ?? 1;
-
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "$productName x$quantity",
-                                      style: TextStyle(color: theme.colorScheme.onSurface, fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Text(
-                                    // 3. MENGGUNAKAN FormatUtil BARU
-                                    FormatUtil.formatRupiah(productPrice * quantity),
-                                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7)),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        const Divider(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Total Pembayaran', style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text(
-                              // 3. MENGGUNAKAN FormatUtil BARU
-                              FormatUtil.formatRupiah(order['total_price']),
-                              style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                          ],
-                        ),
-
-                        if (status.toLowerCase().contains('pending')) ...[
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 35,
-                            child: OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: theme.primaryColor),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              ),
-                              icon: Icon(Icons.refresh, size: 16, color: theme.primaryColor),
-                              label: Text('CEK STATUS PEMBAYARAN', style: TextStyle(fontSize: 12, color: theme.primaryColor, fontWeight: FontWeight.bold)),
-                              onPressed: () {
-                                context.read<OrderBloc>().add(CheckOrderPayment(order['id']));
-                              },
-                            ),
-                          ),
-                        ],
+                        Icon(Icons.receipt_long_outlined, size: 80, color: Colors.grey.shade400),
+                        const SizedBox(height: 16),
+                        Text('Belum ada riwayat transaksi', style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface.withOpacity(0.6))),
                       ],
                     ),
                   );
-                },
-              );
-            }
-            return const SizedBox();
-          },
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) {
+                    final order = orders[index];
+                    final List<dynamic> items = order['items_json'] ?? [];
+                    final String status = order['status'] ?? 'Pending';
+
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.cardColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isDark ? Colors.white.withOpacity(0.08) : Colors.transparent,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDark ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.05),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                order['created_at'].toString().substring(0, 10),
+                                style: const TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: StatusUtil.getStatusColor(status).withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  status,
+                                  style: TextStyle(
+                                      color: StatusUtil.getStatusColor(status),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(height: 24),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, itemIndex) {
+                              final item = items[itemIndex];
+
+                              final productData = item['products'] ?? {};
+                              final String productName = productData['name'] ?? item['product_name'] ?? 'Produk';
+                              final num productPrice = productData['price'] ?? item['price'] ?? 0;
+                              final num quantity = item['quantity'] ?? 1;
+
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "$productName x$quantity",
+                                        style: TextStyle(color: theme.colorScheme.onSurface, fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    Text(
+                                      FormatUtil.formatRupiah(productPrice * quantity),
+                                      style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7)),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          const Divider(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Total Pembayaran', style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text(
+                                FormatUtil.formatRupiah(order['total_price']),
+                                style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ],
+                          ),
+
+                          if (status.toLowerCase().contains('pending')) ...[
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 35,
+                              child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: theme.primaryColor),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                                icon: Icon(Icons.refresh, size: 16, color: theme.primaryColor),
+                                label: Text('CEK STATUS PEMBAYARAN', style: TextStyle(fontSize: 12, color: theme.primaryColor, fontWeight: FontWeight.bold)),
+                                onPressed: () {
+                                  context.read<OrderBloc>().add(CheckOrderPayment(order['id']));
+                                },
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );
