@@ -48,7 +48,7 @@ void main() {
       // expect(loginButton, findsOneWidget);
 
       print('Mencoba Login...');
-      await tester.enterText(find.byType(TextField).at(0), 'tester_tetap1@gearshift.com');
+      await tester.enterText(find.byType(TextField).at(0), 'tester_tetap6@gearshift.com');
       await tester.enterText(find.byType(TextField).at(1), 'password123');
 
       FocusManager.instance.primaryFocus?.unfocus();

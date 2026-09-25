@@ -484,6 +484,24 @@ GEMINI_API_KEY=kunci-api-gemini-anda
 
 ---
 
+---
+
+## Hasil Testing (Screenshots)
+
+### Widget & Unit Testing
+
+|                            Widget & Unit Testing                             |
+|:----------------------------------------------------------------------------:|
+| ![All Widget & Unit Testing](assets/screenshots/Widget%20Unit%20Testing.png) |
+
+### Integration Testing
+
+|                             Auth Integration Testing                             |                              Katalog Integration Testing                               |                                 Ai Mechanic Integration Testing                                  |
+|:--------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|
+| ![Auth Integration Testing](assets/screenshots/Auth%20Integration%20Testing.png) | ![Katalog Integration Testing](assets/screenshots/Katalog%20Integration%20Testing.png) | ![Ai Mechanic Integration Testing](assets/screenshots/Ai%20Mechanic%20Integration%20Testing.png) |
+
+---
+
 ## 📝 Standar Kontribusi (Conventional Commits)
 
 Seluruh riwayat komit mengikuti konvensi **Conventional Commits**:

@@ -30,7 +30,7 @@ void main() {
       // FASE 1: LOGIN AKUN EKSISTING
       // ==========================================
       print('Mencoba Login menggunakan akun eksisting...');
-      await tester.enterText(find.byType(TextField).at(0), 'tester_tetap1@gearshift.com'); // 👈 Sesuaikan emailmu
+      await tester.enterText(find.byType(TextField).at(0), 'tester_tetap6@gearshift.com'); // 👈 Sesuaikan emailmu
       await tester.enterText(find.byType(TextField).at(1), 'password123'); // 👈 Sesuaikan passwordmu
 
       FocusManager.instance.primaryFocus?.unfocus();

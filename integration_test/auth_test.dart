@@ -40,7 +40,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // 👇 INGAT: Jika mau ngetes untuk kedua kalinya, ubah angka di email ini! (misal: tester_tetap3)
-      final String staticEmail = 'tester_tetap4@gearshift.com';
+      final String staticEmail = 'tester_tetap6@gearshift.com';
       final String testPassword = 'password123';
 
       print('Mengisi form pendaftaran dengan email: $staticEmail');
